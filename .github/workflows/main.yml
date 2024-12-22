@@ -47,5 +47,5 @@ jobs:
         with:
           add: |
             - _worker.js
-            - Pages.js
+            - Pages.zip
           default_author: github_actions
