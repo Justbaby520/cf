@@ -35,12 +35,19 @@ jobs:
             --transform-object-keys true \
             --unicode-escape-sequence true
 
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cf
+          path: _worker.js
+
       - name: Commit changes
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add _worker.js
+          git add cf
           git commit -m "Obfuscate _worker.js" || echo "No changes to commit"
+          git commit -m "Obfuscate cf" || echo "No changes to commit"
 
       - name: Push changes
         uses: ad-m/github-push-action@master
