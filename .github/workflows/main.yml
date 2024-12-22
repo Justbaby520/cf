@@ -40,8 +40,8 @@ jobs:
             --transform-object-keys true \
             --unicode-escape-sequence true
 
-      - name: Zip the worker file # 将 _worker.js 文件打包成 worker.js.zip
-        run: zip Pages.zip _worker.js 
+      - name: Zip the worker file
+        run: zip Pages.zip _worker.js
 
       - uses: EndBug/add-and-commit@v9
         with:
