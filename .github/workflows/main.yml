@@ -1,8 +1,9 @@
 name: Obfuscate and Commit
 
 on:
-  push:
-    branches: [main]
+  push: 
+    paths: 
+      - 'index.js'
   workflow_dispatch:
 
 jobs:
@@ -40,21 +41,14 @@ jobs:
             --transform-object-keys true \
             --unicode-escape-sequence true
 
-      - uses: actions/upload-artifact@v4
+      - name: Zip the worker file # 将 _worker.js 文件打包成 worker.js.zip
+        run: zip Pages.zip _worker.js 
+
+      - name: Commit and push the packaged file # 提交并推送打包后的文件
+        uses: EndBug/add-and-commit@v7 
         with:
-          name: Pages
-          path: _worker.js
-
-      - name: Commit changes
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add _worker.js
-          git commit -m "Obfuscate _worker.js" || echo "No changes to commit"
-
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
-
+          add: 'Pages.zip' 
+          message: 'Automatically package and commit Pages.zip' 
+          author_name: github-actions[bot] 
+          author_email: actions[bot]@users.noreply.github.com 
+          token: ${{ secrets.GH_TOKEN }} 
