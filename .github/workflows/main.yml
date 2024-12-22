@@ -1,14 +1,9 @@
 name: Obfuscate and Commit
 
 on:
-  # Push event triggered when specific paths are changed
-  # uncomment the following lines to enable it
-  # push:
-  #   paths:
-  #     - '明文源码.js'
-
-  # Alternatively, use workflow_dispatch manual trigger
-  workflow_dispatch:
+  push:
+     paths:
+       - '明文源码.js'
 
 jobs:
   obfuscate:
@@ -54,8 +49,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: cf
-          path: _worker.js
