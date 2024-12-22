@@ -17,8 +17,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Use Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: "20"
 
@@ -44,11 +43,9 @@ jobs:
       - name: Zip the worker file # 将 _worker.js 文件打包成 worker.js.zip
         run: zip Pages.zip _worker.js 
 
-      - name: Commit and push the packaged file # 提交并推送打包后的文件
-        uses: EndBug/add-and-commit@v7 
+      - uses: EndBug/add-and-commit@v9
         with:
-          add: 'Pages.zip' 
-          message: 'Automatically package and commit Pages.zip' 
-          author_name: github-actions[bot] 
-          author_email: actions[bot]@users.noreply.github.com 
-          token: ${{ secrets.GH_TOKEN }} 
+          add: |
+            - _worker.js
+            - Pages.js
+          default_author: github_actions
