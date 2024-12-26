@@ -2,7 +2,7 @@
 import { connect } from "cloudflare:sockets";
 
 let password = 'baby';
-let proxyIP = '';
+let proxyIP = 'ProxyIP.DE.tp2024.fxxk.dedyn.io';
 let sub = 'trojan.fxxk.dedyn.io'; 
 let subConverter = 'SUBAPI.fxxk.dedyn.io';// clash订阅转换后端，目前使用CM的订阅转换功能。自带虚假节点信息防泄露
 let subConfig = "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/config/ACL4SSR_Online_Mini_MultiMode.ini"; //订阅配置文件
@@ -33,7 +33,7 @@ let BotToken ='';
 let ChatID =''; 
 let proxyhosts = [];
 let proxyhostsURL = '';
-let RproxyIP = 'true';
+let RproxyIP = 'false';
 let httpsPorts = ["2053","2083","2087","2096","8443"];
 let sha224Password ;
 const regex = /^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\[.*\]):?(\d+)?#?(.*)?$/;
