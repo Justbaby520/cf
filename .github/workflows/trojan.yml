@@ -26,7 +26,7 @@ jobs:
 
       - name: Obfuscate code
         run: |
-          javascript-obfuscator trojan.js --output _worker.js \
+          javascript-obfuscator trojan.js --output _trojan.js \
             --compact true \
             --control-flow-flattening true \
             --control-flow-flattening-threshold 1 \
@@ -41,7 +41,7 @@ jobs:
             --unicode-escape-sequence true
 
       - name: Zip the worker file
-        run: zip trojan.zip _worker.js
+        run: zip trojan.zip _trojan.js
 
       - uses: EndBug/add-and-commit@v9
         with:
