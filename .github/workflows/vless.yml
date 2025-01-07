@@ -26,7 +26,7 @@ jobs:
 
       - name: Obfuscate code
         run: |
-          javascript-obfuscator vless.js --output _worker.js \
+          javascript-obfuscator vless.js --output _vless.js \
             --compact true \
             --control-flow-flattening true \
             --control-flow-flattening-threshold 1 \
@@ -41,7 +41,7 @@ jobs:
             --unicode-escape-sequence true
 
       - name: Zip the worker file
-        run: zip vless.zip _worker.js
+        run: zip vless.zip _vless.js
 
       - uses: EndBug/add-and-commit@v9
         with:
