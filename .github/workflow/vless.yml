@@ -3,7 +3,7 @@ name: Obfuscate and Commit
 on:
   push: 
     paths: 
-      - 'index.js'
+      - 'vless.js'
   workflow_dispatch:
 
 jobs:
@@ -26,7 +26,7 @@ jobs:
 
       - name: Obfuscate code
         run: |
-          javascript-obfuscator index.js --output _worker.js \
+          javascript-obfuscator vless.js --output _worker.js \
             --compact true \
             --control-flow-flattening true \
             --control-flow-flattening-threshold 1 \
@@ -46,6 +46,5 @@ jobs:
       - uses: EndBug/add-and-commit@v9
         with:
           add: |
-            - _worker.js
             - Pages.zip
           default_author: github_actions
