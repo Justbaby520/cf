@@ -1,4 +1,4 @@
-name: 更新
+name: Obfuscate and Commit
 
 on:
   push: 
@@ -25,26 +25,8 @@ jobs:
       - name: Install dependencies
         run: npm install -g javascript-obfuscator
 
-      - name: Detect changes for trojan.js
-        id: trojan_changed
-        run: |
-          if git diff --name-only HEAD^ HEAD | grep -q "trojan.js"; then
-            echo "changed=true" >> $GITHUB_ENV
-          else
-            echo "changed=false" >> $GITHUB_ENV
-          fi
-
-      - name: Detect changes for vless.js
-        id: vless_changed
-        run: |
-          if git diff --name-only HEAD^ HEAD | grep -q "vless.js"; then
-            echo "changed=true" >> $GITHUB_ENV
-          else
-            echo "changed=false" >> $GITHUB_ENV
-          fi
-
-      - name: Obfuscate and zip trojan.js (if updated)
-        if: env.changed == 'true' && steps.trojan_changed.outputs.changed == 'true'
+      - name: Obfuscate and zip trojan.js
+        if: "github.event.head_commit.modified && contains(github.event.head_commit.modified, 'trojan.js')"
         run: |
           javascript-obfuscator trojan.js --output _worker.js \
             --compact true \
@@ -61,8 +43,8 @@ jobs:
             --unicode-escape-sequence true
           zip trojan.zip _worker.js
 
-      - name: Obfuscate and zip vless.js (if updated)
-        if: env.changed == 'true' && steps.vless_changed.outputs.changed == 'true'
+      - name: Obfuscate and zip vless.js
+        if: "github.event.head_commit.modified && contains(github.event.head_commit.modified, 'vless.js')"
         run: |
           javascript-obfuscator vless.js --output _worker.js \
             --compact true \
@@ -79,16 +61,16 @@ jobs:
             --unicode-escape-sequence true
           zip vless.zip _worker.js
 
-      - name: Commit trojan.zip (if updated)
-        if: env.changed == 'true' && steps.trojan_changed.outputs.changed == 'true'
+      - name: Commit trojan.zip
+        if: "github.event.head_commit.modified && contains(github.event.head_commit.modified, 'trojan.js')"
         uses: EndBug/add-and-commit@v9
         with:
           add: |
             - trojan.zip
           default_author: github_actions
 
-      - name: Commit vless.zip (if updated)
-        if: env.changed == 'true' && steps.vless_changed.outputs.changed == 'true'
+      - name: Commit vless.zip
+        if: "github.event.head_commit.modified && contains(github.event.head_commit.modified, 'vless.js')"
         uses: EndBug/add-and-commit@v9
         with:
           add: |
