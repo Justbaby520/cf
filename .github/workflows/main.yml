@@ -1,4 +1,4 @@
-name: Obfuscate and Commit
+name: 更新
 
 on:
   push: 
@@ -25,10 +25,28 @@ jobs:
       - name: Install dependencies
         run: npm install -g javascript-obfuscator
 
-      - name: Obfuscate trojan.js (if exists)
-        if: "hashFiles('trojan.js') != ''"
+      - name: Detect changes for trojan.js
+        id: trojan_changed
         run: |
-          javascript-obfuscator trojan.js --output trojan_worker.js \
+          if git diff --name-only HEAD^ HEAD | grep -q "trojan.js"; then
+            echo "changed=true" >> $GITHUB_ENV
+          else
+            echo "changed=false" >> $GITHUB_ENV
+          fi
+
+      - name: Detect changes for vless.js
+        id: vless_changed
+        run: |
+          if git diff --name-only HEAD^ HEAD | grep -q "vless.js"; then
+            echo "changed=true" >> $GITHUB_ENV
+          else
+            echo "changed=false" >> $GITHUB_ENV
+          fi
+
+      - name: Obfuscate and zip trojan.js (if updated)
+        if: env.changed == 'true' && steps.trojan_changed.outputs.changed == 'true'
+        run: |
+          javascript-obfuscator trojan.js --output _worker.js \
             --compact true \
             --control-flow-flattening true \
             --control-flow-flattening-threshold 1 \
@@ -41,11 +59,12 @@ jobs:
             --string-array-threshold 1 \
             --transform-object-keys true \
             --unicode-escape-sequence true
+          zip trojan.zip _worker.js
 
-      - name: Obfuscate vless.js (if exists)
-        if: "hashFiles('vless.js') != ''"
+      - name: Obfuscate and zip vless.js (if updated)
+        if: env.changed == 'true' && steps.vless_changed.outputs.changed == 'true'
         run: |
-          javascript-obfuscator vless.js --output vless_worker.js \
+          javascript-obfuscator vless.js --output _worker.js \
             --compact true \
             --control-flow-flattening true \
             --control-flow-flattening-threshold 1 \
@@ -58,12 +77,20 @@ jobs:
             --string-array-threshold 1 \
             --transform-object-keys true \
             --unicode-escape-sequence true
+          zip vless.zip _worker.js
 
-      - name: Zip the worker files
-        run: zip workers.zip trojan_worker.js vless_worker.js || echo "No files to zip"
-
-      - uses: EndBug/add-and-commit@v9
+      - name: Commit trojan.zip (if updated)
+        if: env.changed == 'true' && steps.trojan_changed.outputs.changed == 'true'
+        uses: EndBug/add-and-commit@v9
         with:
           add: |
-            - workers.zip
+            - trojan.zip
+          default_author: github_actions
+
+      - name: Commit vless.zip (if updated)
+        if: env.changed == 'true' && steps.vless_changed.outputs.changed == 'true'
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: |
+            - vless.zip
           default_author: github_actions
