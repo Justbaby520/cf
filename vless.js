@@ -2,7 +2,7 @@
 import { connect } from 'cloudflare:sockets';
 
 let userID = 'ee49d3c3-ee3a-4b2c-a3b9-7b654700260b';
-let proxyIP = 'ProxyIP.DE.tp2024.fxxk.dedyn.io';
+let proxyIP = '';
 //let sub = '';
 let subConverter = 'SUBAPI.fxxk.dedyn.io';
 let subConfig = "https://raw.githubusercontent.com/ACL4SSR/ACL4SSR/master/Clash/config/ACL4SSR_Online_Mini_MultiMode.ini";
@@ -34,7 +34,7 @@ let BotToken;
 let ChatID;
 let proxyhosts = [];
 let proxyhostsURL = '';
-let RproxyIP = 'false';
+let RproxyIP = 'true';
 let httpsPorts = ["2053", "2083", "2087", "2096", "8443"];
 let 有效时间 = 7;
 let 更新时间 = 3;
