@@ -2,7 +2,7 @@
 import { connect } from 'cloudflare:sockets';
 
 let userID = 'ee49d3c3-ee3a-4b2c-a3b9-7b654700260b';
-let proxyIP = 'ProxyIP.DE.tp2024.CMLiussss.net';
+let proxyIP = '';
 let DNS64Server = '';
 //let sub = '';
 let subConverter = atob('U1VCQVBJLkNNTGl1c3Nzcy5uZXQ=');
